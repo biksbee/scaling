@@ -1,0 +1,23 @@
+services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  server1:
+    build: .
+    environment:
+      - PORT=30110
+    depends_on:
+      - redis
+    ports:
+      - "30110:30110"
+
+  server2:
+    build: .
+    environment:
+      - PORT=30111
+    depends_on:
+      - redis
+    ports:
+      - "30111:30111"
