@@ -6,7 +6,6 @@ import { createAdapter } from '@socket.io/redis-adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const PORT = 30110;
   app.enableCors({
     origin: '*',
     credentials: true,
@@ -23,9 +22,8 @@ async function bootstrap() {
     return server;
   }
   app.useWebSocketAdapter(ioAdapter);
-
-  await app.listen(parseInt('30100', 10), () => {
-    console.log(`Listen port ${PORT}`)
-  });
+  const PORT = parseInt(process.env.PORT || '3000', 10);
+  await app.listen(PORT, '0.0.0.0');
+  console.log(`Listen port ${PORT}`)
 }
 bootstrap();

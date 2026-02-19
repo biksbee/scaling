@@ -18,7 +18,6 @@ export default tseslint.config(
         ...globals.jest,
       },
       sourceType: 'module',
-      parser: '@typescript-eslint/parser',
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,

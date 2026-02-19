@@ -38,10 +38,15 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: { message: string },
     @ConnectedSocket() client: Socket
   ) {
-    this.logger.log(`Received: ${data.message}`);
+    try {
+      this.logger.log(`Received: ${data.message}`);
       client.emit('response', data.message);
       // client.emit('done');
       client.broadcast.emit('message', '1 ' + data.message)
+    } catch (error) {
+      this.logger.warn(`WS auth failed: ${error.message}`);
+      client.disconnect(true);
+    }
   }
 
   handleDisconnect(client: any, ...args): any {
