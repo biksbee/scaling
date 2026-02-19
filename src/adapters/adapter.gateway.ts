@@ -16,8 +16,8 @@ import { Logger } from '@nestjs/common';
     credentials: true
   },
 })
-export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  private readonly logger = new Logger(AppGateway.name);
+export class AdapterGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  private readonly logger = new Logger(AdapterGateway.name);
 
   @WebSocketServer()
   server: Server;

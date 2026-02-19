@@ -10,6 +10,7 @@ services:
     build: .
     environment:
       - PORT=30110
+      - REDIS_HOST=redis
     depends_on:
       - redis
     ports:
@@ -20,6 +21,7 @@ services:
     build: .
     environment:
       - PORT=30111
+      - REDIS_HOST=redis
     depends_on:
       - redis
     ports:
