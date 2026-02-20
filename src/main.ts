@@ -4,7 +4,7 @@ import { RedisIoAdapter } from './adapters/redis-io-adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const PORT = '30110';
+  const PORT = process.env.PORT || '30110';
   app.enableCors({
     origin: '*',
     credentials: true,
