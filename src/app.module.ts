@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AdapterModule } from './app/adapters/adapter.module';
-import { GatewayModule } from './app/gateway/gateway.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './app/user/user.module';
 import { UserEntity } from './app/user/user.entity';
+import { PostModule } from './app/post/post.module';
 
 @Module({
   imports: [
@@ -29,8 +29,8 @@ import { UserEntity } from './app/user/user.entity';
       })
     }),
     AdapterModule,
-    GatewayModule,
     UserModule,
+    PostModule
   ],
   controllers: [],
   providers: [],

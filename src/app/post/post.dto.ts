@@ -10,6 +10,10 @@ export class GetPostDto {
 }
 
 export class CreatePostDto {
+  @ApiProperty({ example: 5, description: 'Author id' })
+  @IsNumber()
+  userId: number;
+
   @ApiProperty({ example: 'test', description: 'Post title'})
   @IsString()
   title: string;
@@ -17,4 +21,11 @@ export class CreatePostDto {
   @ApiProperty({ example: 'Lorem impsum', description: 'Post content' })
   @IsString()
   content: string;
+}
+
+export class ListPostDto {
+  @ApiProperty({ example: 1, description: 'Post id'})
+  @Type(() => Number)
+  @IsNumber()
+  userId: number;
 }
