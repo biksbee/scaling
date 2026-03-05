@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadGatewayException, Injectable, Logger } from '@nestjs/common';
 import { PostTransportInterface } from '../post.interface';
 import { UserService } from '../../user/user.service';
 import { CreatePostDto } from '../post.dto';
@@ -15,9 +15,20 @@ export class RestPostService  implements PostTransportInterface {
   async create(data: CreatePostDto) {}
 
   async get(id: number) {
-    const { data } = await axios.get(`http://localhost:31000/posts/${id}`)
-    return data;
+    try {
+      const { data } = await axios.get(`http://localhost:31000/posts/${id}`);
+      return data;
+    } catch(error) {
+      throw new BadGatewayException('Failed to fetch data from scraper service', error);
+    }
   }
 
-  async list(userId: number) {}
+  async list(userId: number) {
+    try {
+      const { data } = await axios.get(`http://localhost:31000/posts/list/${userId}`);
+      return data;
+    } catch (error) {
+      throw new BadGatewayException('Failed to fetch data from scraper service', error);
+    }
+  }
 }

@@ -5,24 +5,56 @@ services:
     ports:
       - "6379:6379"
 
-  server1:
-    container_name: server1
-    build: .
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
     environment:
-      - PORT=30110
-      - REDIS_HOST=redis
-    depends_on:
-      - redis
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api-gateway:
+    container_name: api-gateway
+    build: .
     ports:
       - "30110:30110"
-
-  server2:
-    container_name: server2
-    build: .
     environment:
-      - PORT=30111
-      - REDIS_HOST=redis
+      DEVELOP: prod
+      PORT: 30110
+      REDIS_HOST: ${REDIS_HOST}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
     depends_on:
+      - postgres
       - redis
+
+#  server2:
+#    container_name: server2
+#    build: .
+#    environment:
+#      - PORT=30111
+#      - REDIS_HOST=redis
+#    depends_on:
+#      - redis
+#    ports:
+#      - "30111:30111"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
     ports:
-      - "30111:30111"
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - api-gateway
+
+volumes:
+  postgres_data:

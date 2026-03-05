@@ -5,6 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './app/user/user.module';
 import { UserEntity } from './app/user/user.entity';
 import { PostModule } from './app/post/post.module';
+import { MetricsModule } from './app/metrics/metrics.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { HttpMetricsInterceptor } from './app/metrics/http-metrics.interceptor';
 
 @Module({
   imports: [
@@ -30,9 +33,16 @@ import { PostModule } from './app/post/post.module';
     }),
     AdapterModule,
     UserModule,
-    PostModule
+    PostModule,
+
+    MetricsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: HttpMetricsInterceptor,
+    },
+  ],
 })
 export class AppModule {}
